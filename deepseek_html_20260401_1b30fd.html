@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Ram Sharan Roy Group of Institutions - Advanced Library Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        :root {
+            --primary: #1a5f7a;
+            --primary-dark: #0d3c55;
+            --primary-light: #57c1eb;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --dark: #343a40;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        /* Login Page Styles */
+        .login-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .login-box {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .login-header {
+            margin-bottom: 2rem;
+        }
+        
+        .login-header .institution-name {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+        
+        .login-header .system-name {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .login-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin: 1.5rem 0;
+            font-weight: 600;
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(26, 95, 122, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(26, 95, 122, 0.4);
+        }
+        
+        .login-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 0.75rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+            font-size: 0.9rem;
+        }
+        
+        .login-footer {
+            margin-top: 1.5rem;
+            color: #666;
+            font-size: 0.85rem;
+        }
+        
+        /* Main System Styles */
+        .main-system {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            background: #f0f2f5;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-left .institution-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .header-left .system-name {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(255,255,255,0.15);
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+        }
+        
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .logout-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+        
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 0.8rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        nav a {
+            color: #555;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        nav a:hover, nav a.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content */
+        main {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 3px solid var(--primary);
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+        
+        .card h3 {
+            color: #666;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card .count {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        /* Forms */
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        
+        .form-container h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #eef2f7;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group label {
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        input, select, textarea {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 95, 122, 0.1);
+        }
+        
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: #333;
+        }
+        
+        .btn-secondary {
+            background: var(--gray);
+            color: white;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eef2f7;
+        }
+        
+        /* Search */
+        .search-container {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            border-radius: 50px;
+            background: white;
+        }
+        
+        .search-container::before {
+            content: "🔍";
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eef2f7;
+        }
+        
+        th {
+            background: #f8fafc;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #555;
+        }
+        
+        tr:hover {
+            background: #fef9e6;
+        }
+        
+        /* Status Badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-issued {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-overdue {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .edit-btn {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .issue-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        .return-btn {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .view-btn {
+            background: #6f42c1;
+            color: white;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .quick-action-btn {
+            background: white;
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #eef2f7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .quick-action-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .quick-action-btn span:first-child {
+            font-size: 1.8rem;
+        }
+        
+        /* Date Time */
+        .date-time {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            border-left: 4px solid var(--primary);
+        }
+        
+        /* Alert */
+        .alert {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+        
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            right: 1.2rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close-modal:hover {
+            color: #dc3545;
+        }
+        
+        .fine-amount {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            margin-top: 2rem;
+            color: #666;
+            font-size: 0.85rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            nav a {
+                justify-content: center;
+            }
+            
+            .date-time {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions button {
+                width: 100%;
+            }
+            
+            main {
+                padding: 1rem;
+            }
+            
+            .login-box {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+        }
+        
+        .empty-state span {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        
+        .badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: #eef2f7;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <div class="login-box">
+            <div class="login-header">
+                <h1 class="institution-name">📚 Ram Sharan Roy Group of Institutions</h1>
+                <p class="system-name">Advanced Library Management System</p>
+            </div>
+            <h2 class="login-title">🔐 Administrator Access</h2>
+            <div class="input-group">
+                <label><i class="fas fa-user"></i> Username</label>
+                <input type="text" id="username" placeholder="Enter username" value="aryan27">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="password" placeholder="Enter password" value="aryan27@rsr">
+            </div>
+            <div class="login-error" id="loginError">
+                <i class="fas fa-exclamation-circle"></i> Invalid username or password!
+            </div>
+            <button class="login-btn" onclick="login()"><i class="fas fa-sign-in-alt"></i> Login to System</button>
+            <div class="login-footer">
+                <p>Demo Credentials: <strong>aryan27</strong> / <strong>aryan27@rsr</strong></p>
+                <p style="margin-top: 8px;">© 2024 Ram Sharan Roy Group of Institutions</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main System -->
+    <div class="main-system" id="mainSystem">
+        <header>
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="institution-name">📚 RSR Group of Institutions</h1>
+                    <p class="system-name">Advanced Library Management System v3.0</p>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar">A</div>
+                        <div>
+                            <div style="font-weight: bold;">Administrator</div>
+                            <div style="font-size: 0.8rem;" id="userName">aryan27</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#dashboard" class="active" onclick="return false;"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="#books" onclick="return false;"><i class="fas fa-book"></i> Books</a></li>
+                <li><a href="#members" onclick="return false;"><i class="fas fa-users"></i> Members</a></li>
+                <li><a href="#transactions" onclick="return false;"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                <li><a href="#reports" onclick="return false;"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li><a href="#settings" onclick="return false;"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <!-- Dashboard -->
+            <section id="dashboard" class="section active">
+                <h2><i class="fas fa-chart-line"></i> Dashboard Overview</h2>
+                <div class="date-time">
+                    <span id="currentDate"><i class="far fa-calendar-alt"></i> Loading...</span>
+                    <span id="currentTime"><i class="far fa-clock"></i> Loading...</span>
+                </div>
+                <div class="cards">
+                    <div class="card" onclick="LibrarySystem.showSection('books')">
+                        <h3>Total Books</h3>
+                        <div class="count" id="totalBooks">0</div>
+                        <div class="subtext">In Collection</div>
+                    </div>
+                    <div class="card" onclick="LibrarySystem.showSection('books')">
+                        <h3>Available Books</h3>
+                        <div class="count" id="availableBooks">0</div>
+                        <div class="subtext">Ready to Issue</div>
+                    </div>
+                    <div class="card" onclick="LibrarySystem.showSection('books')">
+                        <h3>Issued Books</h3>
+                        <div class="count" id="issuedBooks">0</div>
+                        <div class="subtext">Currently Loaned</div>
+                    </div>
+                    <div class="card" onclick="LibrarySystem.showSection('members')">
+                        <h3>Total Members</h3>
+                        <div class="count" id="totalMembers">0</div>
+                        <div class="subtext">Registered Users</div>
+                    </div>
+                    <div class="card" onclick="LibrarySystem.showSection('transactions')">
+                        <h3>Active Loans</h3>
+                        <div class="count" id="activeLoans">0</div>
+                        <div class="subtext">Books Issued</div>
+                    </div>
+                    <div class="card" onclick="LibrarySystem.showSection('reports')">
+                        <h3>Overdue Books</h3>
+                        <div class="count" id="overdueBooks">0</div>
+                        <div class="subtext">Need Attention</div>
+                    </div>
+                </div>
+                <div class="quick-actions">
+                    <div class="quick-action-btn" onclick="LibrarySystem.showSection('books')">
+                        <span>📚</span>
+                        <span>Add New Book</span>
+                    </div>
+                    <div class="quick-action-btn" onclick="LibrarySystem.showSection('members')">
+                        <span>👤</span>
+                        <span>Register Member</span>
+                    </div>
+                    <div class="quick-action-btn" onclick="LibrarySystem.showIssueModal()">
+                        <span>📖</span>
+                        <span>Issue Book</span>
+                    </div>
+                    <div class="quick-action-btn" onclick="LibrarySystem.showSection('transactions')">
+                        <span>🔄</span>
+                        <span>View Transactions</span>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Books Section -->
+            <section id="books" class="section">
+                <h2><i class="fas fa-book"></i> Book Management</h2>
+                <div class="search-container">
+                    <input type="text" id="bookSearch" placeholder="Search by title, author, ISBN or category..." onkeyup="LibrarySystem.searchBooks()">
+                </div>
+                <div class="form-container">
+                    <h3><i class="fas fa-plus-circle"></i> Add / Edit Book</h3>
+                    <form id="bookForm">
+                        <div class="form-grid">
+                            <div class="input-group"><label>Book Title *</label><input type="text" id="bookTitle" required placeholder="Enter book title"></div>
+                            <div class="input-group"><label>Author *</label><input type="text" id="bookAuthor" required placeholder="Enter author name"></div>
+                            <div class="input-group"><label>ISBN *</label><input type="text" id="bookIsbn" required placeholder="Enter ISBN"></div>
+                            <div class="input-group"><label>Category *</label><select id="bookCategory" required><option value="">Select</option><option value="Engineering">Engineering</option><option value="Computer Science">Computer Science</option><option value="Mathematics">Mathematics</option><option value="Science">Science</option><option value="Literature">Literature</option><option value="History">History</option><option value="Reference">Reference</option></select></div>
+                            <div class="input-group"><label>Publisher</label><input type="text" id="bookPublisher" placeholder="Publisher name"></div>
+                            <div class="input-group"><label>Year</label><input type="number" id="bookYear" placeholder="Year"></div>
+                            <div class="input-group"><label>Copies</label><input type="number" id="bookCopies" value="1" min="1"></div>
+                            <div class="input-group"><label>Location/Rack</label><input type="text" id="bookLocation" placeholder="e.g., Rack A-12"></div>
+                        </div>
+                        <div class="input-group"><label>Description</label><textarea id="bookDescription" rows="2" placeholder="Brief description"></textarea></div>
+                        <div class="form-actions"><button type="submit" class="btn-success"><i class="fas fa-save"></i> Save Book</button><button type="button" class="btn-secondary" onclick="LibrarySystem.resetBookForm()"><i class="fas fa-undo"></i> Reset</button></div>
+                    </form>
+                </div>
+                <div class="table-wrapper"><table><thead><tr><th>Title</th><th>Author</th><th>ISBN</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead><tbody id="booksTableBody"></tbody></table></div>
+            </section>
+            
+            <!-- Members Section -->
+            <section id="members" class="section">
+                <h2><i class="fas fa-users"></i> Member Management</h2>
+                <div class="search-container"><input type="text" id="memberSearch" placeholder="Search by name, ID or department..." onkeyup="LibrarySystem.searchMembers()"></div>
+                <div class="form-container">
+                    <h3><i class="fas fa-user-plus"></i> Register Member</h3>
+                    <form id="memberForm">
+                        <div class="form-grid">
+                            <div class="input-group"><label>Full Name *</label><input type="text" id="memberName" required placeholder="Full name"></div>
+                            <div class="input-group"><label>Member Type *</label><select id="memberType" required><option value="">Select</option><option value="Student">Student</option><option value="Faculty">Faculty</option><option value="Staff">Staff</option><option value="Researcher">Researcher</option></select></div>
+                            <div class="input-group"><label>ID Number *</label><input type="text" id="memberId" required placeholder="e.g., STU2024001"></div>
+                            <div class="input-group"><label>Department *</label><input type="text" id="memberDepartment" required placeholder="Department"></div>
+                            <div class="input-group"><label>Email *</label><input type="email" id="memberEmail" required placeholder="Email"></div>
+                            <div class="input-group"><label>Phone</label><input type="tel" id="memberPhone" placeholder="Phone"></div>
+                            <div class="input-group"><label>Join Date</label><input type="date" id="memberJoinDate"></div>
+                            <div class="input-group"><label>Expiry Date</label><input type="date" id="memberExpiryDate"></div>
+                        </div>
+                        <div class="form-actions"><button type="submit" class="btn-success"><i class="fas fa-save"></i> Save Member</button><button type="button" class="btn-secondary" onclick="LibrarySystem.resetMemberForm()"><i class="fas fa-undo"></i> Reset</button></div>
+                    </form>
+                </div>
+                <div class="table-wrapper"><table><thead><tr><th>Name</th><th>ID</th><th>Type</th><th>Department</th><th>Status</th><th>Actions</th></tr></thead><tbody id="membersTableBody"></tbody></table></div>
+            </section>
+            
+            <!-- Transactions Section -->
+            <section id="transactions" class="section">
+                <h2><i class="fas fa-exchange-alt"></i> Transaction Management</h2>
+                <div class="form-container">
+                    <h3><i class="fas fa-book-open"></i> Issue Book</h3>
+                    <form id="issueForm">
+                        <div class="form-grid">
+                            <div class="input-group"><label>Select Book</label><select id="issueBookSelect" required><option value="">Choose book</option></select></div>
+                            <div class="input-group"><label>Select Member</label><select id="issueMemberSelect" required><option value="">Choose member</option></select></div>
+                            <div class="input-group"><label>Issue Date</label><input type="date" id="issueDate" required></div>
+                            <div class="input-group"><label>Due Date</label><input type="date" id="dueDate" required></div>
+                        </div>
+                        <div class="form-actions"><button type="submit" class="btn-primary"><i class="fas fa-check-circle"></i> Issue Book</button></div>
+                    </form>
+                </div>
+                <div class="search-container"><input type="text" id="transactionSearch" placeholder="Search transactions..." onkeyup="LibrarySystem.searchTransactions()"></div>
+                <div class="table-wrapper"><table><thead><tr><th>Book</th><th>Member</th><th>Issue Date</th><th>Due Date</th><th>Return Date</th><th>Status</th><th>Fine</th><th>Actions</th></tr></thead><tbody id="transactionsTableBody"></tbody></table></div>
+            </section>
+            
+            <!-- Reports Section -->
+            <section id="reports" class="section">
+                <h2><i class="fas fa-chart-bar"></i> Reports & Analytics</h2>
+                <div class="cards">
+                    <div class="card" onclick="LibrarySystem.generateReport('daily')"><h3>Daily Report</h3><div class="count" id="todayTransactions">0</div><div class="subtext">Today's Activity</div></div>
+                    <div class="card" onclick="LibrarySystem.generateReport('monthly')"><h3>Monthly Stats</h3><div class="count" id="monthTransactions">0</div><div class="subtext">This Month</div></div>
+                    <div class="card" onclick="LibrarySystem.generateReport('overdue')"><h3>Overdue</h3><div class="count" id="overdueCount">0</div><div class="subtext">Books Overdue</div></div>
+                    <div class="card" onclick="LibrarySystem.generateReport('popular')"><h3>Popular Books</h3><div class="count" id="popularBooks">0</div><div class="subtext">Most Issued</div></div>
+                </div>
+                <div class="form-container">
+                    <h3><i class="fas fa-chart-simple"></i> Generate Custom Report</h3>
+                    <div class="form-grid">
+                        <div class="input-group"><label>Report Type</label><select id="reportType"><option value="daily">Daily Transactions</option><option value="monthly">Monthly Summary</option><option value="overdue">Overdue Books</option><option value="popular">Popular Books</option></select></div>
+                        <div class="input-group"><label>Start Date</label><input type="date" id="reportStartDate"></div>
+                        <div class="input-group"><label>End Date</label><input type="date" id="reportEndDate"></div>
+                    </div>
+                    <div class="form-actions"><button class="btn-primary" onclick="LibrarySystem.generateCustomReport()"><i class="fas fa-file-alt"></i> Generate Report</button><button class="btn-secondary" onclick="LibrarySystem.exportReport()"><i class="fas fa-download"></i> Export</button></div>
+                </div>
+                <div id="reportOutput" class="form-container" style="display:none;"><h3><i class="fas fa-file-pdf"></i> Report Output</h3><div id="reportContent"></div></div>
+            </section>
+            
+            <!-- Settings Section -->
+            <section id="settings" class="section">
+                <h2><i class="fas fa-cog"></i> System Settings</h2>
+                <div class="form-container">
+                    <h3><i class="fas fa-sliders-h"></i> Library Configuration</h3>
+                    <form id="settingsForm">
+                        <div class="form-grid">
+                            <div class="input-group"><label>Max Books Per Member</label><input type="number" id="maxBooksPerMember" min="1" max="20" value="5"></div>
+                            <div class="input-group"><label>Loan Period (Days)</label><input type="number" id="loanPeriod" min="1" max="90" value="14"></div>
+                            <div class="input-group"><label>Daily Fine (₹)</label><input type="number" id="dailyFine" min="0" step="5" value="10"></div>
+                            <div class="input-group"><label>Maximum Fine (₹)</label><input type="number" id="maxFine" min="0" step="50" value="500"></div>
+                            <div class="input-group"><label>Library Name</label><input type="text" id="libraryName" value="RSR Central Library"></div>
+                            <div class="input-group"><label>Contact Email</label><input type="email" id="contactEmail" value="library@rsr.edu.in"></div>
+                        </div>
+                        <div class="form-actions"><button type="submit" class="btn-success"><i class="fas fa-save"></i> Save Settings</button><button type="button" class="btn-secondary" onclick="LibrarySystem.resetSettings()"><i class="fas fa-undo"></i> Reset Defaults</button></div>
+                    </form>
+                </div>
+                <div class="form-container">
+                    <h3><i class="fas fa-tools"></i> System Tools</h3>
+                    <div class="quick-actions">
+                        <div class="quick-action-btn" onclick="LibrarySystem.backupData()"><span>💾</span><span>Backup Data</span></div>
+                        <div class="quick-action-btn" onclick="LibrarySystem.restoreData()"><span>🔄</span><span>Restore Data</span></div>
+                        <div class="quick-action-btn" onclick="LibrarySystem.clearData()"><span>🗑️</span><span>Clear All Data</span></div>
+                        <div class="quick-action-btn" onclick="LibrarySystem.exportData()"><span>📥</span><span>Export Data</span></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>© 2024 Ram Sharan Roy Group of Institutions - Advanced Library Management System | Developed with <i class="fas fa-heart" style="color: #dc3545;"></i> for Academic Excellence</p>
+        </footer>
+    </div>
+    
+    <div id="modal" class="modal"><div class="modal-content"><span class="close-modal" onclick="LibrarySystem.closeModal()">&times;</span><div id="modalContent"></div></div></div>
+    
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+            if (username === 'aryan27' && password === 'aryan27@rsr') {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainSystem').style.display = 'block';
+                LibrarySystem.init();
+                document.getElementById('userName').textContent = username;
+                document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+                LibrarySystem.showAlert('Welcome back, ' + username + '!', 'success');
+            } else {
+                errorDiv.style.display = 'block';
+                setTimeout(() => errorDiv.style.display = 'none', 3000);
+            }
+        }
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('mainSystem').style.display = 'none';
+                document.getElementById('username').value = 'aryan27';
+                document.getElementById('password').value = 'aryan27@rsr';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => { document.getElementById('password')?.addEventListener('keypress', e => { if(e.key === 'Enter') login(); }); });
+        
+        const LibrarySystem = {
+            books: [], members: [], transactions: [],
+            settings: { maxBooksPerMember: 5, loanPeriod: 14, dailyFine: 10, maxFine: 500, libraryName: "RSR Central Library", contactEmail: "library@rsr.edu.in" },
+            currentEditId: null,
+            
+            init() {
+                this.loadData();
+                this.setupEventListeners();
+                this.updateDashboard();
+                this.startClock();
+                this.setDefaultDates();
+                this.loadBooksForSelection();
+                this.loadMembersForSelection();
+                this.updateYear();
+            },
+            
+            loadData() {
+                try {
+                    if(localStorage.getItem('libraryBooks')) this.books = JSON.parse(localStorage.getItem('libraryBooks'));
+                    if(localStorage.getItem('libraryMembers')) this.members = JSON.parse(localStorage.getItem('libraryMembers'));
+                    if(localStorage.getItem('libraryTransactions')) this.transactions = JSON.parse(localStorage.getItem('libraryTransactions'));
+                    if(localStorage.getItem('librarySettings')) this.settings = JSON.parse(localStorage.getItem('librarySettings'));
+                    if(this.books.length === 0) this.loadSampleData();
+                } catch(e) { this.loadSampleData(); }
+            },
+            
+            saveData() {
+                localStorage.setItem('libraryBooks', JSON.stringify(this.books));
+                localStorage.setItem('libraryMembers', JSON.stringify(this.members));
+                localStorage.setItem('libraryTransactions', JSON.stringify(this.transactions));
+                localStorage.setItem('librarySettings', JSON.stringify(this.settings));
+            },
+            
+            loadSampleData() {
+                this.books = [
+                    { id: '1', title: 'Introduction to Algorithms', author: 'Thomas H. Cormen', isbn: '9780262033848', category: 'Computer Science', publisher: 'MIT Press', year: '2009', copies: 5, availableCopies: 3, location: 'Rack CS-101', description: 'Comprehensive algorithms guide', status: 'available', addedDate: '2024-01-15' },
+                    { id: '2', title: 'Engineering Mathematics', author: 'K. A. Stroud', isbn: '9780831134490', category: 'Mathematics', publisher: 'Industrial Press', year: '2013', copies: 8, availableCopies: 6, location: 'Rack MATH-201', description: 'Essential math for engineers', status: 'available', addedDate: '2024-02-10' },
+                    { id: '3', title: 'The Feynman Lectures on Physics', author: 'Richard P. Feynman', isbn: '9780201021158', category: 'Science', publisher: 'Addison-Wesley', year: '2005', copies: 4, availableCopies: 1, location: 'Rack PHYS-301', description: 'Classic physics lectures', status: 'issued', addedDate: '2024-01-20' }
+                ];
+                this.members = [
+                    { id: 'MEM001', name: 'Rahul Sharma', type: 'Student', memberId: 'STU2024001', department: 'Computer Science', email: 'rahul@student.rsr.edu.in', phone: '9876543210', joinDate: '2024-01-10', expiryDate: '2025-01-10', status: 'active', booksIssued: 2 },
+                    { id: 'MEM002', name: 'Dr. Priya Singh', type: 'Faculty', memberId: 'FAC2024001', department: 'Mathematics', email: 'priya.singh@rsr.edu.in', phone: '9876543211', joinDate: '2024-01-05', expiryDate: '2025-01-05', status: 'active', booksIssued: 1 }
+                ];
+                this.transactions = [
+                    { id: 'TRN001', bookId: '3', memberId: 'MEM001', bookTitle: 'The Feynman Lectures on Physics', memberName: 'Rahul Sharma', issueDate: '2024-03-01', dueDate: '2024-03-15', returnDate: null, fine: 0, status: 'issued' }
+                ];
+                this.saveData();
+            },
+            
+            setupEventListeners() {
+                document.querySelectorAll('nav a').forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); this.showSection(link.getAttribute('href').substring(1)); }); });
+                document.getElementById('bookForm')?.addEventListener('submit', (e) => { e.preventDefault(); this.saveBook(); });
+                document.getElementById('memberForm')?.addEventListener('submit', (e) => { e.preventDefault(); this.saveMember(); });
+                document.getElementById('issueForm')?.addEventListener('submit', (e) => { e.preventDefault(); this.issueBook(); });
+                document.getElementById('settingsForm')?.addEventListener('submit', (e) => { e.preventDefault(); this.saveSettings(); });
+                document.getElementById('issueDate')?.addEventListener('change', () => this.updateDueDate());
+            },
+            
+            showSection(sectionId) {
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(sectionId)?.classList.add('active');
+                document.querySelectorAll('nav a').forEach(link => { link.classList.remove('active'); if(link.getAttribute('href') === `#${sectionId}`) link.classList.add('active'); });
+                if(sectionId === 'books') this.displayBooks();
+                if(sectionId === 'members') this.displayMembers();
+                if(sectionId === 'transactions') this.displayTransactions();
+                if(sectionId === 'reports') this.updateReportStats();
+                if(sectionId === 'settings') this.loadSettingsToForm();
+            },
+            
+            updateDashboard() {
+                const stats = this.calculateStats();
+                document.getElementById('totalBooks').textContent = stats.totalBooks;
+                document.getElementById('availableBooks').textContent = stats.availableBooks;
+                document.getElementById('issuedBooks').textContent = stats.issuedBooks;
+                document.getElementById('totalMembers').textContent = stats.totalMembers;
+                document.getElementById('activeLoans').textContent = stats.activeLoans;
+                document.getElementById('overdueBooks').textContent = stats.overdueBooks;
+            },
+            
+            calculateStats() {
+                const totalBooks = this.books.length;
+                const availableBooks = this.books.filter(b => b.status === 'available').length;
+                const issuedBooks = this.books.filter(b => b.status === 'issued').length;
+                const totalMembers = this.members.length;
+                const activeLoans = this.transactions.filter(t => t.returnDate === null).length;
+                const overdueBooks = this.transactions.filter(t => t.returnDate === null && new Date(t.dueDate) < new Date()).length;
+                return { totalBooks, availableBooks, issuedBooks, totalMembers, activeLoans, overdueBooks };
+            },
+            
+            saveBook() {
+                const bookData = {
+                    title: document.getElementById('bookTitle').value,
+                    author: document.getElementById('bookAuthor').value,
+                    isbn: document.getElementById('bookIsbn').value,
+                    category: document.getElementById('bookCategory').value,
+                    publisher: document.getElementById('bookPublisher').value,
+                    year: document.getElementById('bookYear').value,
+                    copies: parseInt(document.getElementById('bookCopies').value),
+                    location: document.getElementById('bookLocation').value,
+                    description: document.getElementById('bookDescription').value
+                };
+                if(!bookData.title || !bookData.author || !bookData.isbn || !bookData.category) { this.showAlert("Please fill required fields!", "error"); return; }
+                if(this.currentEditId) {
+                    const index = this.books.findIndex(b => b.id === this.currentEditId);
+                    if(index !== -1) { this.books[index] = { ...this.books[index], ...bookData }; this.showAlert("Book updated!", "success"); }
+                    this.currentEditId = null;
+                } else {
+                    const newBook = { id: 'BOOK' + Date.now(), ...bookData, availableCopies: bookData.copies, status: 'available', addedDate: new Date().toISOString().split('T')[0] };
+                    this.books.push(newBook);
+                    this.showAlert("Book added!", "success");
+                }
+                this.saveData();
+                this.resetBookForm();
+                this.displayBooks();
+                this.updateDashboard();
+                this.loadBooksForSelection();
+            },
+            
+            editBook(bookId) {
+                const book = this.books.find(b => b.id === bookId);
+                if(!book) return;
+                this.currentEditId = bookId;
+                document.getElementById('bookTitle').value = book.title;
+                document.getElementById('bookAuthor').value = book.author;
+                document.getElementById('bookIsbn').value = book.isbn;
+                document.getElementById('bookCategory').value = book.category;
+                document.getElementById('bookPublisher').value = book.publisher || '';
+                document.getElementById('bookYear').value = book.year || '';
+                document.getElementById('bookCopies').value = book.copies || 1;
+                document.getElementById('bookLocation').value = book.location || '';
+                document.getElementById('bookDescription').value = book.description || '';
+                this.showSection('books');
+                document.getElementById('bookForm').scrollIntoView({ behavior: 'smooth' });
+            },
+            
+            deleteBook(bookId) {
+                if(confirm("Delete this book?")) {
+                    this.books = this.books.filter(b => b.id !== bookId);
+                    this.saveData();
+                    this.displayBooks();
+                    this.updateDashboard();
+                    this.loadBooksForSelection();
+                    this.showAlert("Book deleted!", "success");
+                }
+            },
+            
+            resetBookForm() { document.getElementById('bookForm').reset(); this.currentEditId = null; },
+            
+            displayBooks() {
+                const tbody = document.getElementById('booksTableBody');
+                if(!tbody) return;
+                if(this.books.length === 0) { tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><span>📚</span><h3>No Books Found</h3></div></td></tr>'; return; }
+                tbody.innerHTML = this.books.map(book => `<tr><td><strong>${book.title}</strong></td><td>${book.author}</td><td>${book.isbn}</td><td><span class="badge">${book.category}</span></td><td><span class="status-badge ${book.status === 'available' ? 'status-available' : 'status-issued'}">${book.status === 'available' ? 'Available' : 'Issued'}</span></td><td><div class="actions"><button class="action-btn edit-btn" onclick="LibrarySystem.editBook('${book.id}')"><i class="fas fa-edit"></i> Edit</button><button class="action-btn delete-btn" onclick="LibrarySystem.deleteBook('${book.id}')"><i class="fas fa-trash"></i> Delete</button>${book.status === 'available' ? `<button class="action-btn issue-btn" onclick="LibrarySystem.quickIssue('${book.id}')"><i class="fas fa-book-open"></i> Issue</button>` : ''}</div></td></tr>`).join('');
+            },
+            
+            searchBooks() {
+                const term = document.getElementById('bookSearch').value.toLowerCase();
+                const tbody = document.getElementById('booksTableBody');
+                if(!term) { this.displayBooks(); return; }
+                const filtered = this.books.filter(b => b.title.toLowerCase().includes(term) || b.author.toLowerCase().includes(term) || b.isbn.includes(term) || b.category.toLowerCase().includes(term));
+                tbody.innerHTML = filtered.map(book => `<tr><td><strong>${book.title}</strong></td><td>${book.author}</td><td>${book.isbn}</td><td><span class="badge">${book.category}</span></td><td><span class="status-badge ${book.status === 'available' ? 'status-available' : 'status-issued'}">${book.status === 'available' ? 'Available' : 'Issued'}</span></td><td><div class="actions"><button class="action-btn edit-btn" onclick="LibrarySystem.editBook('${book.id}')"><i class="fas fa-edit"></i> Edit</button><button class="action-btn delete-btn" onclick="LibrarySystem.deleteBook('${book.id}')"><i class="fas fa-trash"></i> Delete</button></div></td></tr>`).join('');
+            },
+            
+            saveMember() {
+                const memberData = {
+                    name: document.getElementById('memberName').value,
+                    type: document.getElementById('memberType').value,
+                    memberId: document.getElementById('memberId').value,
+                    department: document.getElementById('memberDepartment').value,
+                    email: document.getElementById('memberEmail').value,
+                    phone: document.getElementById('memberPhone').value,
+                    joinDate: document.getElementById('memberJoinDate').value,
+                    expiryDate: document.getElementById('memberExpiryDate').value
+                };
+                if(!memberData.name || !memberData.type || !memberData.memberId || !memberData.email) { this.showAlert("Fill required fields!", "error"); return; }
+                if(this.currentEditId) {
+                    const index = this.members.findIndex(m => m.id === this.currentEditId);
+                    if(index !== -1) { this.members[index] = { ...this.members[index], ...memberData }; this.showAlert("Member updated!", "success"); }
+                    this.currentEditId = null;
+                } else {
+                    const newMember = { id: 'MEM' + Date.now().toString().slice(-6), ...memberData, status: 'active', booksIssued: 0 };
+                    this.members.push(newMember);
+                    this.showAlert("Member registered!", "success");
+                }
+                this.saveData();
+                this.resetMemberForm();
+                this.displayMembers();
+                this.updateDashboard();
+                this.loadMembersForSelection();
+            },
+            
+            editMember(memberId) {
+                const member = this.members.find(m => m.id === memberId);
+                if(!member) return;
+                this.currentEditId = memberId;
+                document.getElementById('memberName').value = member.name;
+                document.getElementById('memberType').value = member.type;
+                document.getElementById('memberId').value = member.memberId;
+                document.getElementById('memberDepartment').value = member.department;
+                document.getElementById('memberEmail').value = member.email;
+                document.getElementById('memberPhone').value = member.phone || '';
+                document.getElementById('memberJoinDate').value = member.joinDate;
+                document.getElementById('memberExpiryDate').value = member.expiryDate;
+                this.showSection('members');
+                document.getElementById('memberForm').scrollIntoView({ behavior: 'smooth' });
+            },
+            
+            deleteMember(memberId) {
+                if(this.transactions.some(t => t.memberId === memberId && t.returnDate === null)) { this.showAlert("Cannot delete member with active loans!", "error"); return; }
+                if(confirm("Delete this member?")) {
+                    this.members = this.members.filter(m => m.id !== memberId);
+                    this.saveData();
+                    this.displayMembers();
+                    this.updateDashboard();
+                    this.loadMembersForSelection();
+                    this.showAlert("Member deleted!", "success");
+                }
+            },
+            
+            resetMemberForm() { document.getElementById('memberForm').reset(); this.currentEditId = null; this.setDefaultDates(); },
+            
+            displayMembers() {
+                const tbody = document.getElementById('membersTableBody');
+                if(!tbody) return;
+                if(this.members.length === 0) { tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><span>👤</span><h3>No Members Found</h3></div></td></tr>'; return; }
+                tbody.innerHTML = this.members.map(member => `<tr><td><strong>${member.name}</strong></td><td>${member.memberId}</td><td><span class="badge">${member.type}</span></td><td>${member.department}</td><td><span class="status-badge status-active">Active</span></td><td><div class="actions"><button class="action-btn edit-btn" onclick="LibrarySystem.editMember('${member.id}')"><i class="fas fa-edit"></i> Edit</button><button class="action-btn delete-btn" onclick="LibrarySystem.deleteMember('${member.id}')"><i class="fas fa-trash"></i> Delete</button><button class="action-btn view-btn" onclick="LibrarySystem.viewMemberDetails('${member.id}')"><i class="fas fa-eye"></i> View</button></div></td></tr>`).join('');
+            },
+            
+            searchMembers() {
+                const term = document.getElementById('memberSearch').value.toLowerCase();
+                const tbody = document.getElementById('membersTableBody');
+                if(!term) { this.displayMembers(); return; }
+                const filtered = this.members.filter(m => m.name.toLowerCase().includes(term) || m.memberId.toLowerCase().includes(term) || m.department.toLowerCase().includes(term));
+                tbody.innerHTML = filtered.map(member => `<tr><td><strong>${member.name}</strong></td><td>${member.memberId}</td><td><span class="badge">${member.type}</span></td><td>${member.department}</td><td><span class="status-badge status-active">Active</span></td><td><div class="actions"><button class="action-btn edit-btn" onclick="LibrarySystem.editMember('${member.id}')"><i class="fas fa-edit"></i> Edit</button><button class="action-btn delete-btn" onclick="LibrarySystem.deleteMember('${member.id}')"><i class="fas fa-trash"></i> Delete</button></div></td></tr>`).join('');
+            },
+            
+            loadBooksForSelection() {
+                const select = document.getElementById('issueBookSelect');
+                if(!select) return;
+                select.innerHTML = '<option value="">Select book to issue</option>';
+                this.books.filter(b => b.status === 'available').forEach(book => { select.innerHTML += `<option value="${book.id}">${book.title} by ${book.author}</option>`; });
+            },
+            
+            loadMembersForSelection() {
+                const select = document.getElementById('issueMemberSelect');
+                if(!select) return;
+                select.innerHTML = '<option value="">Select member</option>';
+                this.members.filter(m => m.status === 'active').forEach(member => { select.innerHTML += `<option value="${member.id}">${member.name} (${member.memberId})</option>`; });
+            },
+            
+            updateDueDate() {
+                const issueDate = document.getElementById('issueDate').value;
+                if(!issueDate) return;
+                const dueDate = new Date(issueDate);
+                dueDate.setDate(dueDate.getDate() + this.settings.loanPeriod);
+                document.getElementById('dueDate').value = dueDate.toISOString().split('T')[0];
+            },
+            
+            issueBook() {
+                const bookId = document.getElementById('issueBookSelect').value;
+                const memberId = document.getElementById('issueMemberSelect').value;
+                const issueDate = document.getElementById('issueDate').value;
+                const dueDate = document.getElementById('dueDate').value;
+                if(!bookId || !memberId || !issueDate || !dueDate) { this.showAlert("Fill all fields!", "error"); return; }
+                const book = this.books.find(b => b.id === bookId);
+                const member = this.members.find(m => m.id === memberId);
+                if(!book || !member) { this.showAlert("Invalid selection!", "error"); return; }
+                if(this.transactions.filter(t => t.memberId === memberId && t.returnDate === null).length >= this.settings.maxBooksPerMember) { this.showAlert(`Member limit reached (${this.settings.maxBooksPerMember})`, "error"); return; }
+                const transaction = { id: 'TRN' + Date.now(), bookId, memberId, bookTitle: book.title, memberName: member.name, issueDate, dueDate, returnDate: null, fine: 0, status: 'issued' };
+                book.status = 'issued';
+                book.availableCopies = Math.max(0, (book.availableCopies || book.copies) - 1);
+                member.booksIssued = (member.booksIssued || 0) + 1;
+                this.transactions.push(transaction);
+                this.saveData();
+                this.showAlert("Book issued successfully!", "success");
+                document.getElementById('issueForm').reset();
+                this.setDefaultDates();
+                this.displayTransactions();
+                this.displayBooks();
+                this.displayMembers();
+                this.updateDashboard();
+                this.loadBooksForSelection();
+            },
+            
+            quickIssue(bookId) { this.showSection('transactions'); document.getElementById('issueBookSelect').value = bookId; document.getElementById('issueForm').scrollIntoView({ behavior: 'smooth' }); },
+            
+            displayTransactions() {
+                const tbody = document.getElementById('transactionsTableBody');
+                if(!tbody) return;
+                if(this.transactions.length === 0) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><span>🔄</span><h3>No Transactions</h3></div></td></tr>'; return; }
+                tbody.innerHTML = this.transactions.map(t => {
+                    const isOverdue = !t.returnDate && new Date(t.dueDate) < new Date();
+                    let statusClass = 'status-available', statusText = 'Returned';
+                    if(!t.returnDate) { if(isOverdue) { statusClass = 'status-overdue'; statusText = 'Overdue'; } else { statusClass = 'status-issued'; statusText = 'Issued'; } }
+                    return `<tr><td><strong>${t.bookTitle}</strong></td><td>${t.memberName}</td><td>${t.issueDate}</td><td>${t.dueDate}</td><td>${t.returnDate || 'Not returned'}</td><td><span class="status-badge ${statusClass}">${statusText}</span></td><td class="fine-amount">₹${t.fine}</td><td><div class="actions">${!t.returnDate ? `<button class="action-btn return-btn" onclick="LibrarySystem.returnBook('${t.id}')"><i class="fas fa-undo"></i> Return</button>` : ''}<button class="action-btn delete-btn" onclick="LibrarySystem.deleteTransaction('${t.id}')"><i class="fas fa-trash"></i> Delete</button></div></td></tr>`;
+                }).join('');
+            },
+            
+            searchTransactions() {
+                const term = document.getElementById('transactionSearch').value.toLowerCase();
+                const tbody = document.getElementById('transactionsTableBody');
+                if(!term) { this.displayTransactions(); return; }
+                const filtered = this.transactions.filter(t => t.bookTitle.toLowerCase().includes(term) || t.memberName.toLowerCase().includes(term));
+                tbody.innerHTML = filtered.map(t => `<tr><td><strong>${t.bookTitle}</strong></td><td>${t.memberName}</td><td>${t.issueDate}</td><td>${t.dueDate}</td><td>${t.returnDate || 'Not returned'}</td><td><span class="status-badge">${t.returnDate ? 'Returned' : 'Issued'}</span></td><td class="fine-amount">₹${t.fine}</td><td><div class="actions"><button class="action-btn return-btn" onclick="LibrarySystem.returnBook('${t.id}')"><i class="fas fa-undo"></i> Return</button><button class="action-btn delete-btn" onclick="LibrarySystem.deleteTransaction('${t.id}')"><i class="fas fa-trash"></i> Delete</button></div></td></tr>`).join('');
+            },
+            
+            returnBook(transactionId) {
+                const transaction = this.transactions.find(t => t.id === transactionId);
+                if(!transaction) return;
+                const book = this.books.find(b => b.id === transaction.bookId);
+                const member = this.members.find(m => m.id === transaction.memberId);
+                if(!book || !member) return;
+                const returnDate = new Date().toISOString().split('T')[0];
+                transaction.returnDate = returnDate;
+                const dueDate = new Date(transaction.dueDate);
+                const returnDateObj = new Date(returnDate);
+                if(returnDateObj > dueDate) { const daysLate = Math.ceil((returnDateObj - dueDate) / (86400000)); transaction.fine = Math.min(daysLate * this.settings.dailyFine, this.settings.maxFine); }
+                book.status = 'available';
+                book.availableCopies = (book.availableCopies || 0) + 1;
+                member.booksIssued = Math.max(0, (member.booksIssued || 0) - 1);
+                transaction.status = 'returned';
+                this.saveData();
+                this.showAlert("Book returned successfully!", "success");
+                this.displayTransactions();
+                this.displayBooks();
+                this.displayMembers();
+                this.updateDashboard();
+                this.loadBooksForSelection();
+            },
+            
+            deleteTransaction(transactionId) {
+                if(confirm("Delete this transaction?")) {
+                    this.transactions = this.transactions.filter(t => t.id !== transactionId);
+                    this.saveData();
+                    this.displayTransactions();
+                    this.updateDashboard();
+                    this.showAlert("Transaction deleted!", "success");
+                }
+            },
+            
+            updateReportStats() {
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('todayTransactions').textContent = this.transactions.filter(t => t.issueDate === today).length;
+                const startOfMonth = new Date(); startOfMonth.setDate(1);
+                document.getElementById('monthTransactions').textContent = this.transactions.filter(t => t.issueDate >= startOfMonth.toISOString().split('T')[0]).length;
+                document.getElementById('overdueCount').textContent = this.transactions.filter(t => !t.returnDate && new Date(t.dueDate) < new Date()).length;
+                const bookIssues = {}; this.transactions.forEach(t => bookIssues[t.bookTitle] = (bookIssues[t.bookTitle] || 0) + 1);
+                document.getElementById('popularBooks').textContent = Object.keys(bookIssues).length;
+            },
+            
+            generateReport(type) {
+                let content = '';
+                const today = new Date().toISOString().split('T')[0];
+                if(type === 'daily') {
+                    const todayTx = this.transactions.filter(t => t.issueDate === today);
+                    content = `<h3>Daily Report - ${today}</h3><p>Total Transactions: ${todayTx.length}</p>${todayTx.length ? '<table><thead><tr><th>Book</th><th>Member</th><th>Type</th></tr></thead><tbody>' + todayTx.map(t => `<tr><td>${t.bookTitle}</td><td>${t.memberName}</td><td>${t.returnDate ? 'Return' : 'Issue'}</td></tr>`).join('') + '</tbody></table>' : '<p>No transactions today.</p>'}`;
+                } else if(type === 'monthly') {
+                    const startOfMonth = new Date(); startOfMonth.setDate(1);
+                    const monthTx = this.transactions.filter(t => t.issueDate >= startOfMonth.toISOString().split('T')[0]);
+                    content = `<h3>Monthly Summary</h3><div class="cards"><div class="card"><h3>Total</h3><div class="count">${monthTx.length}</div></div><div class="card"><h3>Issued</h3><div class="count">${monthTx.filter(t => !t.returnDate).length}</div></div><div class="card"><h3>Returned</h3><div class="count">${monthTx.filter(t => t.returnDate).length}</div></div><div class="card"><h3>Fines</h3><div class="count">₹${monthTx.reduce((s,t)=>s+t.fine,0)}</div></div></div>`;
+                } else if(type === 'overdue') {
+                    const overdue = this.transactions.filter(t => !t.returnDate && new Date(t.dueDate) < new Date());
+                    content = `<h3>Overdue Books (${overdue.length})</h3>${overdue.length ? '<table><thead><tr><th>Book</th><th>Member</th><th>Due Date</th><th>Days Overdue</th><th>Fine</th></tr></thead><tbody>' + overdue.map(t => { const days = Math.ceil((new Date() - new Date(t.dueDate)) / 86400000); return `<tr><td>${t.bookTitle}</td><td>${t.memberName}</td><td>${t.dueDate}</td><td>${days}</td><td class="fine-amount">₹${Math.min(days * this.settings.dailyFine, this.settings.maxFine)}</td></tr>`; }).join('') + '</tbody></table>' : '<p>No overdue books!</p>'}`;
+                } else if(type === 'popular') {
+                    const bookIssues = {}; this.transactions.forEach(t => bookIssues[t.bookTitle] = (bookIssues[t.bookTitle] || 0) + 1);
+                    const sorted = Object.entries(bookIssues).sort((a,b) => b[1] - a[1]).slice(0,10);
+                    content = `<h3>Top 10 Popular Books</h3>${sorted.length ? '<table><thead><tr><th>Rank</th><th>Book Title</th><th>Issues</th></tr></thead><tbody>' + sorted.map(([title,count],i) => `<tr><td>${i+1}</td><td><strong>${title}</strong></td><td>${count}</td></tr>`).join('') + '</tbody></table>' : '<p>No data available.</p>'}`;
+                }
+                document.getElementById('reportOutput').style.display = 'block';
+                document.getElementById('reportContent').innerHTML = content;
+                document.getElementById('reportOutput').scrollIntoView({ behavior: 'smooth' });
+            },
+            
+            generateCustomReport() { this.generateReport(document.getElementById('reportType').value); },
+            exportReport() { this.showAlert("Export feature coming soon!", "info"); },
+            
+            loadSettingsToForm() {
+                document.getElementById('maxBooksPerMember').value = this.settings.maxBooksPerMember;
+                document.getElementById('loanPeriod').value = this.settings.loanPeriod;
+                document.getElementById('dailyFine').value = this.settings.dailyFine;
+                document.getElementById('maxFine').value = this.settings.maxFine;
+                document.getElementById('libraryName').value = this.settings.libraryName;
+                document.getElementById('contactEmail').value = this.settings.contactEmail;
+            },
+            
+            saveSettings() {
+                this.settings = {
+                    maxBooksPerMember: parseInt(document.getElementById('maxBooksPerMember').value),
+                    loanPeriod: parseInt(document.getElementById('loanPeriod').value),
+                    dailyFine: parseInt(document.getElementById('dailyFine').value),
+                    maxFine: parseInt(document.getElementById('maxFine').value),
+                    libraryName: document.getElementById('libraryName').value,
+                    contactEmail: document.getElementById('contactEmail').value
+                };
+                this.saveData();
+                this.showAlert("Settings saved!", "success");
+            },
+            
+            resetSettings() {
+                if(confirm("Reset all settings to defaults?")) {
+                    this.settings = { maxBooksPerMember: 5, loanPeriod: 14, dailyFine: 10, maxFine: 500, libraryName: "RSR Central Library", contactEmail: "library@rsr.edu.in" };
+                    this.loadSettingsToForm();
+                    this.saveData();
+                    this.showAlert("Settings reset!", "success");
+                }
+            },
+            
+            backupData() {
+                const data = { books: this.books, members: this.members, transactions: this.transactions, settings: this.settings };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `library_backup_${new Date().toISOString().split('T')[0]}.json`; a.click(); URL.revokeObjectURL(a.href);
+                this.showAlert("Backup created!", "success");
+            },
+            
+            restoreData() {
+                const input = document.createElement('input'); input.type = 'file'; input.accept = '.json';
+                input.onchange = (e) => { const file = e.target.files[0]; const reader = new FileReader(); reader.onload = (ev) => { try { const data = JSON.parse(ev.target.result); if(confirm("Replace all data?")) { this.books = data.books || []; this.members = data.members || []; this.transactions = data.transactions || []; this.settings = data.settings || this.settings; this.saveData(); this.showAlert("Data restored!", "success"); this.updateDashboard(); this.displayBooks(); this.displayMembers(); this.displayTransactions(); this.loadBooksForSelection(); this.loadMembersForSelection(); } } catch(e) { this.showAlert("Invalid file!", "error"); } }; reader.readAsText(file); }; input.click();
+            },
+            
+            clearData() {
+                if(confirm("⚠️ WARNING: Delete ALL data? This cannot be undone!")) {
+                    this.books = []; this.members = []; this.transactions = [];
+                    this.saveData();
+                    this.updateDashboard();
+                    this.displayBooks();
+                    this.displayMembers();
+                    this.displayTransactions();
+                    this.loadBooksForSelection();
+                    this.loadMembersForSelection();
+                    this.showAlert("All data cleared!", "success");
+                }
+            },
+            
+            exportData() { this.showAlert("Export feature coming soon!", "info"); },
+            
+            showAlert(message, type) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert ${type}`;
+                alertDiv.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+                alertDiv.style.display = 'block';
+                const main = document.querySelector('main');
+                if(main) { main.insertBefore(alertDiv, main.firstChild); setTimeout(() => alertDiv.remove(), 4000); }
+            },
+            
+            startClock() { this.updateDateTime(); setInterval(() => this.updateDateTime(), 1000); },
+            
+            updateDateTime() {
+                const now = new Date();
+                document.getElementById('currentDate').innerHTML = `<i class="far fa-calendar-alt"></i> ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+                document.getElementById('currentTime').innerHTML = `<i class="far fa-clock"></i> ${now.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
+            },
+            
+            setDefaultDates() {
+                const today = new Date().toISOString().split('T')[0];
+                if(document.getElementById('issueDate')) document.getElementById('issueDate').value = today;
+                if(document.getElementById('dueDate')) { const due = new Date(); due.setDate(due.getDate() + 14); document.getElementById('dueDate').value = due.toISOString().split('T')[0]; }
+                if(document.getElementById('memberJoinDate')) document.getElementById('memberJoinDate').value = today;
+                if(document.getElementById('memberExpiryDate')) { const expiry = new Date(); expiry.setFullYear(expiry.getFullYear() + 1); document.getElementById('memberExpiryDate').value = expiry.toISOString().split('T')[0]; }
+                if(document.getElementById('reportStartDate')) { const start = new Date(); start.setDate(1); document.getElementById('reportStartDate').value = start.toISOString().split('T')[0]; document.getElementById('reportEndDate').value = today; }
+            },
+            
+            updateYear() { document.getElementById('currentYear').textContent = new Date().getFullYear(); },
+            showIssueModal() { this.showSection('transactions'); document.getElementById('issueForm').scrollIntoView({ behavior: 'smooth' }); },
+            closeModal() { document.getElementById('modal').style.display = 'none'; },
+            
+            viewMemberDetails(memberId) {
+                const member = this.members.find(m => m.id === memberId);
+                if(!member) return;
+                const loans = this.transactions.filter(t => t.memberId === memberId && t.returnDate === null);
+                document.getElementById('modalContent').innerHTML = `<h3><i class="fas fa-user-circle"></i> Member Details</h3><div style="margin:20px 0;"><p><strong>Name:</strong> ${member.name}</p><p><strong>ID:</strong> ${member.memberId}</p><p><strong>Type:</strong> ${member.type}</p><p><strong>Department:</strong> ${member.department}</p><p><strong>Email:</strong> ${member.email}</p><p><strong>Phone:</strong> ${member.phone || 'Not provided'}</p><p><strong>Join Date:</strong> ${member.joinDate}</p><p><strong>Expiry:</strong> ${member.expiryDate}</p><p><strong>Active Loans:</strong> ${loans.length}</p></div>${loans.length ? '<h4>Currently Issued Books</h4><table><thead><tr><th>Book</th><th>Issue Date</th><th>Due Date</th></tr></thead><tbody>' + loans.map(l => `<tr><td>${l.bookTitle}</td><td>${l.issueDate}</td><td>${l.dueDate}</td></tr>`).join('') + '</tbody></table>' : '<p>No active loans.</p>'}`;
+                document.getElementById('modal').style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html>
